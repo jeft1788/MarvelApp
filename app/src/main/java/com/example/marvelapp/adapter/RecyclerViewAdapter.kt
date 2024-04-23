@@ -3,6 +3,7 @@ package com.example.marvelapp.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,9 +14,11 @@ import com.example.marvelapp.model.Superheroe
 
 class RecyclerViewAdapter:
     RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
-
      var superheroes: MutableList<Superheroe> = ArrayList()
      lateinit var context: Context
+     lateinit var miListener: onItemClickListener
+
+
      //Constructor
      fun RecyclerViewAdapter(superheroes: MutableList<Superheroe>,
                          context: Context){
@@ -27,7 +30,7 @@ class RecyclerViewAdapter:
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).
             inflate(R.layout.item_superheroe, parent,
-                false))
+                false),miListener)
     }
 
     override fun getItemCount(): Int {
@@ -40,7 +43,7 @@ class RecyclerViewAdapter:
         holder.bind(item, context)
     }
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, listener: onItemClickListener): RecyclerView.ViewHolder(view) {
         val superheroeName
             = view.findViewById<TextView>(R.id.tvSuperhero)
         val realName
@@ -58,6 +61,18 @@ class RecyclerViewAdapter:
         fun ImageView.loadImage(url: String){
             Glide.with(context).load(url).into(this)
         }
+        init {
+            view.setOnClickListener {
+                listener.onItemClickListener(bindingAdapterPosition)
+            }
+        }
+    }
+
+    interface onItemClickListener{
+        fun onItemClickListener(position: Int)
+    }
+    fun setOnItemClickListener(listener: onItemClickListener){
+        miListener = listener
     }
 }
 
