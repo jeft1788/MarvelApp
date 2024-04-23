@@ -1,10 +1,13 @@
 package com.example.marvelapp
 
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.example.marvelapp.databinding.ActivityDetailBinding
 import com.example.marvelapp.databinding.ActivityMainBinding
 
@@ -25,7 +28,10 @@ class DetailActivity : AppCompatActivity() {
         binding.tvRealName.text = nombreReal
         var publisher: String = intent.getStringExtra("publisher").toString()
         binding.tvPublisher.text = publisher
-        var foto: String = intent.getStringExtra("foto").toString()
-        //binding.ivAvatar = foto
+        var foto = intent.getStringExtra("imagen")
+        binding.ivAvatar.loadImage(foto.toString())
+    }
+    fun ImageView.loadImage(url: String){
+        Glide.with(context).load(url).into(this)
     }
 }
